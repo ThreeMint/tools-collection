@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>可拖拽API</title>
+    <style>
+      th,
+      td {
+        border: 1px solid rgb(160 160 160);
+        /* padding: 8px 10px; */
+      }
+
+      th[scope="col"] {
+        height: 40px;
+        background-color: #505050;
+        color: #fff;
+      }
+
+      th[scope="row"] {
+        width: 40px;
+        height: 30px;
+        background-color: #d6ecd4;
+      }
+
+      td {
+        height: 40px;
+        width: 80px;
+        text-align: center;
+      }
+
+      tr:nth-of-type(even) {
+        background-color: #eee;
+      }
+
+      table {
+        border-collapse: collapse;
+        border: 2px solid rgb(140 140 140);
+        font-family: sans-serif;
+        font-size: 0.8rem;
+        letter-spacing: 1px;
+      }
+      .container {
+        float: left;
+      }
+      .left {
+        float: left;
+        width: 60px;
+        margin-right: 10px;
+        padding: 5px;
+        text-align: center;
+        font-weight: bold;
+        background-color: #b6b5b5;
+      }
+      .left > div {
+        padding: 5px;
+        margin-bottom: 5px;
+        border: 1px solid #000;
+      }
+      .color1 {
+        background-color: #ff7c7c;
+      }
+      .color2 {
+        background-color: #d7ff8c;
+      }
+      .color3 {
+        background-color: #8cf7ff;
+      }
+      .color4 {
+        background-color: #708aff;
+      }
+      .color5 {
+        background-color: #9b70ff;
+      }
+      .color6 {
+        background-color: #de70ff;
+      }
+      .color7 {
+        background-color: #ff61cf;
+      }
+      .drop-over {
+        background-color: #4e4e4e;
+      }
+      .item {
+        height: 100%;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="left" data-drop="move">
+        <div data-effect="copy" draggable="true" class="color1 item">语文</div>
+        <div data-effect="copy" draggable="true" class="color2 item">数学</div>
+        <div data-effect="copy" draggable="true" class="color3 item">英语</div>
+        <div data-effect="copy" draggable="true" class="color4 item">政治</div>
+        <div data-effect="copy" draggable="true" class="color5 item">历史</div>
+        <div data-effect="copy" draggable="true" class="color6 item">物理</div>
+        <div data-effect="copy" draggable="true" class="color7 item">化学</div>
+      </div>
+
+      <div class="right">
+        <table>
+          <colgroup>
+            <col />
+            <col />
+            <col />
+            <col />
+            <col />
+            <col />
+            <col />
+            <col />
+          </colgroup>
+          <thead>
+            <tr>
+              <th></th>
+              <th scope="row">周一</th>
+              <th scope="row">周二</th>
+              <th scope="row">周三</th>
+              <th scope="row">周四</th>
+              <th scope="row">周五</th>
+              <th scope="row">周六</th>
+              <th scope="row">周七</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row" rowspan="4">上午</th>
+              <td data-drop="copy"></td>
+              <td data-drop="copy"></td>
+              <td data-drop="copy"></td>
+              <td data-drop="copy"></td>
+              <td data-drop="copy"></td>
+              <td data-drop="copy"></td>
+              <td data-drop="copy"></td>
+            </tr>
+            <tr>
+              <td data-drop="copy"></td>
+              <td data-drop="copy"></td>
+              <td data-drop="copy"></td>
+              <td data-drop="copy"></td>
+              <td data-drop="copy"></td>
+              <td data-drop="copy"></td>
+              <td data-drop="copy"></td>
+            </tr>
+            <tr>
+              <td data-drop="copy"></td>
+              <td data-drop="copy"></td>
+              <td data-drop="copy"></td>
+              <td data-drop="copy"></td>
+              <td data-drop="copy"></td>
+              <td data-drop="copy"></td>
+              <td data-drop="copy"></td>
+            </tr>
+            <tr>
+              <td data-drop="copy"></td>
+              <td data-drop="copy"></td>
+              <td data-drop="copy"></td>
+              <td data-drop="copy"></td>
+              <td data-drop="copy"></td>
+              <td data-drop="copy"></td>
+              <td data-drop="copy"></td>
+            </tr>
+            <tr>
+              <th scope="row" rowspan="4">下午</th>
+              <td data-drop="copy"></td>
+              <td data-drop="copy"></td>
+              <td data-drop="copy"></td>
+              <td data-drop="copy"></td>
+              <td data-drop="copy"></td>
+              <td data-drop="copy"></td>
+              <td data-drop="copy"></td>
+            </tr>
+            <tr>
+              <td data-drop="copy"></td>
+              <td data-drop="copy"></td>
+              <td data-drop="copy"></td>
+              <td data-drop="copy"></td>
+              <td data-drop="copy"></td>
+              <td data-drop="copy"></td>
+              <td data-drop="copy"></td>
+            </tr>
+            <tr>
+              <td data-drop="copy"></td>
+              <td data-drop="copy"></td>
+              <td data-drop="copy"></td>
+              <td data-drop="copy"></td>
+              <td data-drop="copy"></td>
+              <td data-drop="copy"></td>
+              <td data-drop="copy"></td>
+            </tr>
+            <tr>
+              <td data-drop="copy"></td>
+              <td data-drop="copy"></td>
+              <td data-drop="copy"></td>
+              <td data-drop="copy"></td>
+              <td data-drop="copy"></td>
+              <td data-drop="copy"></td>
+              <td data-drop="copy"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <script>
+      const container = document.querySelector(".container");
+
+      let source;
+      container.ondragstart = (e) => {
+        e.dataTransfer.effectAllowed = e.target.dataset.effect;
+        source = e.target;
+      };
+      container.ondragover = (e) => {
+        e.preventDefault();
+        // console.log(e.target);
+      };
+
+      function getDropNode(node) {
+        while (node) {
+          if (node.dataset.drop) {
+            return node;
+          }
+          node = node.parentNode;
+        }
+      }
+
+      function clearDropStyle() {
+        const dropNode = document.querySelectorAll(".drop-over");
+        dropNode.forEach((node) => {
+          node.classList.remove("drop-over");
+        });
+      }
+
+      container.ondragenter = (e) => {
+        clearDropStyle();
+        const dropNode = getDropNode(e.target);
+        if (!dropNode) {
+          return;
+        }
+        if (e.dataTransfer.effectAllowed === dropNode.dataset.drop) {
+          dropNode.classList.add("drop-over");
+        }
+      };
+
+      container.ondrop = (e) => {
+        clearDropStyle();
+        const dropNode = getDropNode(e.target);
+        if (!dropNode) {
+          return;
+        }
+        if (e.dataTransfer.effectAllowed !== dropNode.dataset.drop) {
+          return;
+        }
+        if (dropNode.dataset.drop === "copy") {
+          dropNode.innerHTML = "";
+          const cloned = source.cloneNode(true);
+          cloned.dataset.effect = "move";
+          dropNode.appendChild(cloned);
+        } else {
+          //move
+          console.log("111:", source);
+          source.remove();
+        }
+      };
+    </script>
+  </body>
+</html>
