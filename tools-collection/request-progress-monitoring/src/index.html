@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Request Progress Monitoring</title>
+  </head>
+  <body>
+    <h2>下载进度条</h2>
+    <progress
+      id="downloadProgress"
+      value="0"
+      max="100"
+      style="width: 500px"
+    ></progress>
+    <span id="downloadProgressText">0%</span>
+    <br />
+    <button id="downloadBtn">下载</button>
+
+    <script>
+      // Ajax：XHR 或 Fetch
+      // 响应进度监控
+      document.querySelector("#downloadBtn").addEventListener("click", () => {
+        const xhr = new XMLHttpRequest();
+        const progressBar = document.querySelector('#downloadProgress');
+        const progressText = document.querySelector('#downloadProgressText');
+
+        xhr.open('GET', 'http://localhost:3000/download');
+        xhr.responseType = 'blob';
+        xhr.onprogress = function(event){
+           
+            let percent = Math.round((event.loaded/event.total) * 100);
+            console.log(event.loaded, event.total,percent);
+            progressBar.value = percent;
+            progressText.textContent = percent + '%';
+        }
+
+        xhr.onload = function(){
+            if(xhr.status === 200){
+                const blob = new Blob([xhr.response]);
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = '手机壁纸5.rar';
+                a.click();
+                window.URL.revokeObjectURL(url);
+            }
+        };
+
+        xhr.onerror = function() {
+            alert('Download failed');
+        };
+
+        xhr.send();
+    
+      });
+
+      // 请求进度监控
+    </script>
+  </body>
+</html>
