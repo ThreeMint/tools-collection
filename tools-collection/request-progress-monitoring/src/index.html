@@ -15,47 +15,99 @@
     ></progress>
     <span id="downloadProgressText">0%</span>
     <br />
-    <button id="downloadBtn">下载</button>
-
+    <button id="downloadBtn">XHR下载</button>
+    <br />
+    <button id="downloadBtnStream">Fetch下载-流式传输</button>
     <script>
       // Ajax：XHR 或 Fetch
-      // 响应进度监控
+
+      // XMLHttpRequest 下载进度监控
       document.querySelector("#downloadBtn").addEventListener("click", () => {
         const xhr = new XMLHttpRequest();
-        const progressBar = document.querySelector('#downloadProgress');
-        const progressText = document.querySelector('#downloadProgressText');
+        const progressBar = document.querySelector("#downloadProgress");
+        const progressText = document.querySelector("#downloadProgressText");
 
-        xhr.open('GET', 'http://localhost:3000/download');
-        xhr.responseType = 'blob';
-        xhr.onprogress = function(event){
-           
-            let percent = Math.round((event.loaded/event.total) * 100);
-            console.log(event.loaded, event.total,percent);
-            progressBar.value = percent;
-            progressText.textContent = percent + '%';
-        }
-
-        xhr.onload = function(){
-            if(xhr.status === 200){
-                const blob = new Blob([xhr.response]);
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = '手机壁纸5.rar';
-                a.click();
-                window.URL.revokeObjectURL(url);
-            }
+        xhr.open("GET", "http://localhost:3000/download");
+        xhr.responseType = "blob";
+        xhr.onprogress = function (event) {
+          let percent = Math.round((event.loaded / event.total) * 100);
+          console.log(event.loaded, event.total, percent);
+          progressBar.value = percent;
+          progressText.textContent = percent + "%";
         };
 
-        xhr.onerror = function() {
-            alert('Download failed');
+        xhr.onload = function () {
+          if (xhr.status === 200) {
+            const blob = new Blob([xhr.response]);
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "手机壁纸5.rar";
+            a.click();
+            window.URL.revokeObjectURL(url);
+          }
+        };
+
+        xhr.onerror = function () {
+          alert("Download failed");
         };
 
         xhr.send();
-    
       });
 
-      // 请求进度监控
+      // Fetch 下载进度监控
+      document
+        .querySelector("#downloadBtnStream")
+        .addEventListener("click", async () => {
+          const progressBar = document.querySelector("#downloadProgress");
+          const progressText = document.querySelector("#downloadProgressText");
+
+          // 请求URL
+          const response = await fetch("http://localhost:3000/download-stream");
+          // 从响应头中获取内容长度(content-length)，这是文件的总大小
+          const contentLength = response.headers.get("content-length");
+          if (!contentLength) {
+            alert("Fetch无法获取Stream流式文件大小，无法显示进度");
+            return;
+          }
+
+          //内容长度取整
+          const total = parseInt(contentLength, 10);
+          let loaded = 0; // 初始化已加载字节数为0
+
+          // 从响应体中获取读取器(reader)，用于逐步读取流数据
+          const reader = response.body.getReader();
+          // 创建一个数组来存储接收到的数据块(chunks)
+          const chunks = [];
+
+          while (true) {
+            // 读取数据流的下一个数据块
+            // done - 表示流是否已经读取完毕
+            // value - 包含实际数据的Uint8Array(如果还有数据)
+            const { done, value } = await reader.read();
+            if (done) break;
+
+            // 将当前读取到的数据块添加到chunks数组中
+            chunks.push(value);
+            // 更新已加载的字节数(累加当前数据块的长度)
+            loaded += value.length;
+
+            // 计算下载进度百分比
+            const percent = Math.round((loaded / total) * 100);
+            progressBar.value = percent;
+            progressText.textContent = percent + "%";
+          }
+
+          // 合并所有 chunk，得到完整的响应内容（例如 Blob）
+          const blob = new Blob(chunks);
+          const downloadUrl = window.URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = downloadUrl;
+          a.download = "手机壁纸5.rar"; // 可以设置文件名
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+        });
     </script>
   </body>
 </html>
